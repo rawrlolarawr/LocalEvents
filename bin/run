@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+AquariumEventsController.new("https://www.mysticaquarium.org/events/").call
