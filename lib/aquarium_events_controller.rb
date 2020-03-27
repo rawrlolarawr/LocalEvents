@@ -39,7 +39,7 @@ class AquariumEventsController
     end
 
     def list_events
-        @aquarium_scraper.calendar.events.each_with_index {|e, i| puts "#{i+1}. #{e.name}"}
+        @aquarium_scraper.calendar.events.each_with_index {|event, index| puts "#{index + 1}. #{event.date} - #{event.name}"}
         puts "Enter the number of the Event you would like more information about"
         input = get_input.to_i
         if input.between?(1, @aquarium_scraper.calendar.events.length)
@@ -61,5 +61,6 @@ class AquariumEventsController
         puts "#{event.name}"
         puts "#{event.date}"
         puts "#{event.description}"
+        puts "Website: #{event.url}"
     end
 end
