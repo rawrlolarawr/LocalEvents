@@ -14,18 +14,15 @@ class AquariumEventsController
     end
 
     def menu
-        input = get_input.downcase
+        input = get_input
         if input == "events" || input == "exit"
-            while input != "exit"
-                case input
-                when "events"
-                    list_events
-                    puts "what would you like to do? 'events' for the list of events again or 'exit' to quit"
-                    input = get_input
-                when "exit"
-                    puts "Goodbye!"
-                    break
-                end
+            case input
+            when "events"
+                list_events
+                puts "what would you like to do? 'events' for the list of events again or 'exit' to quit"
+                menu
+            when "exit"
+                exit
             end
         else
             puts "Please enter a valid response"
@@ -33,17 +30,12 @@ class AquariumEventsController
         end
     end
 
-    def get_input
-        input = ""
-        input = gets.strip
-    end
-
     def list_events
         @aquarium_scraper.calendar.events.each_with_index {|event, index| puts "#{index + 1}. #{event.date} - #{event.name}"}
         puts "Enter the number of the Event you would like more information about"
-        input = get_input.to_i
-        if input.between?(1, @aquarium_scraper.calendar.events.length)
-            event = @aquarium_scraper.calendar.events[input - 1]
+        input = get_input
+        if input.to_i.between?(1, @aquarium_scraper.calendar.events.length)
+            event = @aquarium_scraper.calendar.events[input.to_i - 1]
             populate_event(event)
             display_event(event)
         else
@@ -62,5 +54,13 @@ class AquariumEventsController
         puts "#{event.date}"
         puts "#{event.description}"
         puts "Website: #{event.url}"
+    end
+    
+    def get_input
+        input = gets.strip.downcase
+    end
+
+    def exit
+        puts "Goodbye!"
     end
 end
