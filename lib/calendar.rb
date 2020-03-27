@@ -1,9 +1,9 @@
 class Calendar
 
-    attr_accessor :name
+    attr_accessor :name, :url
 
-    def initialize(name)
-        @name = name
+    def initialize(name, url)
+        @name, @url = name, url
         @events = []
     end
 

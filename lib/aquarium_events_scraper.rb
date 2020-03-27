@@ -2,8 +2,8 @@ class AquariumEventsScraper
     attr_accessor :calendar, :doc, :links, :names, :dates
 
     def initialize(url)
-        @calendar = Calendar.new("Mystic Aquarium")
-        @doc = Nokogiri::HTML(open(url))
+        @calendar = Calendar.new("Mystic Aquarium", url)
+        @doc = Nokogiri::HTML(open(@calendar.url))
         scrape
     end
 
