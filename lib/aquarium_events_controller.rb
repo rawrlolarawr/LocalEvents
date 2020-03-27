@@ -1,8 +1,6 @@
 class AquariumEventsController
-    attr_writer :a
-
-    def initialize(url)
-        @aquarium_scraper = AquariumEventsScraper.new(url)
+    def initialize(name, url)
+        @aquarium_scraper = AquariumEventsScraper.new(name, url)
     end
 
     def call
@@ -45,7 +43,7 @@ class AquariumEventsController
     end
 
     def populate_event(event)
-        @aquarium_scraper.scrape_event_info(event)
+        @aquarium_scraper.scrape_mystic_event_info(event)
     end
 
     def display_event(event)
