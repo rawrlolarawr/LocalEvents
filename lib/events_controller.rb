@@ -1,23 +1,50 @@
 class EventsController
-    def initialize(name, url)
-        @scraper = Scraper.new(name, url)
-    end
-
     def call
         puts "\n\n\n\n\n\n"
         puts "Local Events\n\n"
-        puts "What would you like to do?"
-        puts "Type 'events' to see the current events or 'exit' to quit"
+        source_picker
         menu
     end
 
-    def menu
+    def source_picker
+        puts "Choose a Location"
+        puts "1. Mystic Aquarium"
+        puts "2. Niantic Children's Museum"
         input = get_input
-        if input == "events" || input == "exit"
+        if input == "1" || input == "2"
+            case input.to_i
+            when 1
+                if Calendar.find_by_name("Mystic Aquarium")
+                    @current_calendar = Calendar.find_by_name("Mystic Aquarium")
+                else
+                    @mystic_scraper = Scraper.new("Mystic Aquarium", "https://www.mysticaquarium.org/events/")
+                    @current_calendar = Calendar.find_by_name("Mystic Aquarium")
+                end
+            when 2
+                if Calendar.find_by_name("Mystic Aquarium")
+                    @current_calendar = Calendar.find_by_name("Niantic Children's Museum")
+                else
+                    @NCM_scraper = Scraper.new("Niantic Children's Museum", "https://www.childrensmuseumsect.org/events/")
+                    @current_calendar = Calendar.find_by_name("Niantic Children's Museum")
+                end
+            end
+        else
+            puts "Invalid response, please try again."
+            menu
+        end
+    end
+
+    def menu
+        puts "What would you like to do?"
+        puts "Type 'events' to see the current events, 'source' to choose a new source or 'exit' to quit"
+        input = get_input
+        if input == "events" || input == "exit" || input == "source"
             case input
             when "events"
                 list_events
-                puts "what would you like to do? 'events' for the list of events again or 'exit' to quit"
+                menu
+            when "source"
+                source_picker
                 menu
             when "exit"
                 exit
@@ -29,11 +56,11 @@ class EventsController
     end
 
     def list_events
-        @scraper.calendar.event_list.each_with_index {|event, index| puts "#{index + 1}. #{event.date} - #{event.name}"}
+        @current_calendar.event_list.each_with_index {|event, index| puts "#{index + 1}. #{event.name}"}
         puts "Enter the number of the Event you would like more information about"
         input = get_input
-        if input.to_i.between?(1, @scraper.calendar.event_list.length)
-            event = @scraper.calendar.event_list[input.to_i - 1]
+        if input.to_i.between?(1, @current_calendar.event_list.length)
+            event = @current_calendar.event_list[input.to_i - 1]
             populate_event(event)
             display_event(event)
         else
@@ -43,7 +70,11 @@ class EventsController
     end
 
     def populate_event(event)
-        @scraper.scrape_mystic_event_info(event)
+        if @current_calendar.name == "Mystic Aquarium"
+            @mystic_scraper.scrape_event_info(event)
+        elsif @current_calendar.name == "Niantic Children's Museum"
+            @NCM_scraper.scrape_event_info(event)
+        end
     end
 
     def display_event(event)
