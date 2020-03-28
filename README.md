@@ -1,6 +1,6 @@
 # AquariumEvents
 
-The Aquarium Events gem uses Nokogiri and open-uri to scrape the events page from the Mystic Aquarium and displays them in a list to which you can then select one to get more information on. This application creates a calendar object which contains many Event objects to demonstrate web scraping and object relationships
+The Aquarium Events gem uses Nokogiri and open-uri to scrape the events page from the Mystic Aquarium and the Niantic Children's Museum then displays them in a list to which you can then select one to get more information on. This application creates a calendar object which contains many Event objects to demonstrate web scraping and object relationships
 
 ## Installation
 
