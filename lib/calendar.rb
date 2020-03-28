@@ -1,19 +1,22 @@
 class Calendar
+    attr_accessor :name, :url
 
-    attr_accessor :name, :url, :events
+    @@all = []
 
     def initialize(name, url)
         @name, @url = name, url
-        @events = []
+        save
     end
 
-    def events
+    def event_list
         Event.all.select {|event| event.calendar == self}
     end
 
-    # def events=(event)
-    #     if event.is_a?(Event)
-    #         @events << event
-    #     end
-    # end
+    def save
+        @@all << self
+    end
+
+    def self.all
+        @@all
+    end
 end

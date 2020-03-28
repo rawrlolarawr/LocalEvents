@@ -9,7 +9,6 @@ class Event
     end
 
     def save
-        @calendar.events << self
         @@all << self
     end
 

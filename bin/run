@@ -2,4 +2,5 @@
 
 require_relative '../config/environment'
 
-AquariumEventsController.new("Mystic Aquarium", "https://www.mysticaquarium.org/events/").call
+EventsController.new("Mystic Aquarium", "https://www.mysticaquarium.org/events/").call
+# EventsController.new("Niantic Children's Museum", "https://www.childrensmuseumsect.org/events/").call
