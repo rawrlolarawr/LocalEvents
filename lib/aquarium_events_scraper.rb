@@ -33,7 +33,6 @@ class AquariumEventsScraper
             attributes[:date] = @dates[i]
             attributes[:calendar] = @calendar
             event = Event.new(attributes)
-            @calendar.events = event
         end
     end
 end

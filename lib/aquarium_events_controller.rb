@@ -48,10 +48,10 @@ class AquariumEventsController
 
     def display_event(event)
         puts "\n\n\n"
-        puts "#{event.name}"
-        puts "#{event.date}"
+        puts "#{event.name}\n\n"
+        puts "#{event.date}\n\n"
         puts "#{event.description}"
-        puts "Website: #{event.url}"
+        puts "Website: #{event.url}\n\n"
     end
     
     def get_input
