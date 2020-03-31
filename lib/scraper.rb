@@ -19,10 +19,8 @@ class Scraper
     def scrape_mystic_calendar_content
         @links = @doc.css('h2.tribe-events-list-event-title a').map {|link| link['href']}
         @names = @doc.css('h2.tribe-events-list-event-title a').map {|name| name.text.strip}
-        # @dates = @doc.css('div span.tribe-event-date-start').map {|date| date.text}
     end
 
-    # Not Working Yet!!!
     def scrape_NCM_calendar_content
         @links = @doc.css('h3.tribe-events-month-event-title a').map {|link| link['href']}
         @names = @doc.css('h3.tribe-events-month-event-title a').map {|name| name.text.strip}
@@ -39,7 +37,6 @@ class Scraper
             attributes = {}
             attributes[:name] = @names[i]
             attributes[:url] = link
-            # attributes[:date] = @dates[i]
             attributes[:calendar] = @calendar
             event = Event.new(attributes)
         end

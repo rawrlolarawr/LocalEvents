@@ -30,7 +30,7 @@ class EventsController
             end
         else
             puts "Invalid response, please try again."
-            menu
+            source_picker
         end
     end
 
