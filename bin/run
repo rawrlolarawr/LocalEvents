@@ -3,5 +3,3 @@
 require_relative '../config/environment'
 
 EventsController.new.call
-# ("Mystic Aquarium", "https://www.mysticaquarium.org/events/")
-# ("Niantic Children's Museum", "https://www.childrensmuseumsect.org/events/")

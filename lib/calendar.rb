@@ -1,26 +1,23 @@
+# Need to figure out why this won't work in the environment file
+# require_relative 'concerns/objects'
+
 class Calendar
-    attr_accessor :name, :url
+    extend Objects::ClassMethods
+    include Objects::InstanceMethods
+
+    #Class Methods
 
     @@all = []
-
-    def initialize(name, url)
-        @name, @url = name, url
-        save
-    end
-
-    def event_list
-        Event.all.select {|event| event.calendar == self}
-    end
-
-    def save
-        @@all << self
-    end
 
     def self.all
         @@all
     end
+    
+    #Instance Methods
 
-    def self.find_by_name(name)
-        @@all.find {|calendar| calendar.name == name}
+    attr_accessor :name, :url , :css_calendar_tags
+
+    def event_list
+        Event.all.select {|event| event.calendar == self}
     end
 end

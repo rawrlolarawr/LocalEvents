@@ -1,44 +1,45 @@
 class EventsController
+    #Input Validation Constants
+
+    MENU_RESPONSES = ["events", "source", "exit"]
+    SOURCE_RESPONSES = ["1", "2"]
+
+    def initialize
+        @scraper = Scraper.new
+    end
+
+    #Main Method
+
     def call
-        puts "\n\n\n\n\n\n"
-        puts "Local Events\n\n"
+        puts "\n\n\n\n\n\nLocal Events\n\n"
         source_picker
         menu
     end
 
+    #CLI Methods
+
     def source_picker
-        puts "Choose a Location"
-        puts "1. Mystic Aquarium"
-        puts "2. Niantic Children's Museum"
+        printer(["Choose a Location", "1. Mystic Aquarium", "2. Niantic Children's Museum"])
+
         input = get_input
-        if input == "1" || input == "2"
+        if valid?(SOURCE_RESPONSES, input)
             case input.to_i
             when 1
-                if Calendar.find_by_name("Mystic Aquarium")
-                    @current_calendar = Calendar.find_by_name("Mystic Aquarium")
-                else
-                    @mystic_scraper = Scraper.new("Mystic Aquarium", "https://www.mysticaquarium.org/events/")
-                    @current_calendar = Calendar.find_by_name("Mystic Aquarium")
-                end
+                scrape_and_or_set_calendar("Mystic Aquarium")
             when 2
-                if Calendar.find_by_name("Mystic Aquarium")
-                    @current_calendar = Calendar.find_by_name("Niantic Children's Museum")
-                else
-                    @NCM_scraper = Scraper.new("Niantic Children's Museum", "https://www.childrensmuseumsect.org/events/")
-                    @current_calendar = Calendar.find_by_name("Niantic Children's Museum")
-                end
+                scrape_and_or_set_calendar("Niantic Children's Museum")
             end
         else
-            puts "Invalid response, please try again."
+            invalid_response
             source_picker
         end
     end
 
     def menu
-        puts "What would you like to do?"
-        puts "Type 'events' to see the current events, 'source' to choose a new source or 'exit' to quit"
+        printer(["What would you like to do?", "Type 'events' to see the current events, 'source' to choose a new source or 'exit' to quit"])
+
         input = get_input
-        if input == "events" || input == "exit" || input == "source"
+        if valid?(MENU_RESPONSES, input)
             case input
             when "events"
                 list_events
@@ -50,43 +51,62 @@ class EventsController
                 exit
             end
         else
-            puts "Please enter a valid response"
+            invalid_response
             menu
         end
     end
 
+    #Calendar Methods
+
+    def scrape_and_or_set_calendar(name)
+        if Calendar.find_by_name(name)
+            @current_calendar = Calendar.find_by_name(name)
+        else
+            @scraper.scrape(name)
+            @current_calendar = Calendar.find_by_name(name)
+        end
+    end
+
+    #Event Methods
+
     def list_events
         @current_calendar.event_list.each_with_index {|event, index| puts "#{index + 1}. #{event.name}"}
+        more_information
+    end
+
+    def more_information
         puts "Enter the number of the Event you would like more information about"
         input = get_input
         if input.to_i.between?(1, @current_calendar.event_list.length)
             event = @current_calendar.event_list[input.to_i - 1]
-            populate_event(event)
-            display_event(event)
+            populate_and_display_event(event)
         else
-            puts "Please enter a valid response"
-            list_events
+            invalid_response
+            more_information
         end
     end
 
-    def populate_event(event)
-        if @current_calendar.name == "Mystic Aquarium"
-            @mystic_scraper.scrape_event_info(event)
-        elsif @current_calendar.name == "Niantic Children's Museum"
-            @NCM_scraper.scrape_event_info(event)
-        end
-    end
-
-    def display_event(event)
-        puts "\n\n\n"
-        puts "#{event.name}\n\n"
-        puts "#{event.date}\n\n"
-        puts "#{event.description}"
-        puts "Website: #{event.url}\n\n"
+    def populate_and_display_event(event)
+        @scraper.scrape_event_info(event)
+        printer(["#{event.name}", "#{event.date}\n\n", "#{event.description}", "Website: #{event.url}\n\n"])
     end
     
+    #Shortcut Methods
+
     def get_input
         input = gets.strip.downcase
+    end
+
+    def valid?(valid_answers, input)
+        valid_answers.any?(input)
+    end
+
+    def invalid_response
+        puts "Please enter a valid response"
+    end
+
+    def printer(items)
+        items.each {|i| puts i}
     end
 
     def exit
