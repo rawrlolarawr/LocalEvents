@@ -1,6 +1,3 @@
-# Need to figure out why this won't work in the environment file
-# require_relative 'concerns/objects'
-
 class Calendar
     extend Objects::ClassMethods
     include Objects::InstanceMethods
