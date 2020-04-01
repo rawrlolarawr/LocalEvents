@@ -1,6 +1,6 @@
 class Calendar
-    extend Objects::ClassMethods
-    include Objects::InstanceMethods
+    extend DataObjects::ClassMethods
+    include DataObjects::InstanceMethods
 
     #Class Methods
 

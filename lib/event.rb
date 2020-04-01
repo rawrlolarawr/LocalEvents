@@ -1,6 +1,6 @@
 class Event
-    extend Objects::ClassMethods
-    include Objects::InstanceMethods
+    extend DataObjects::ClassMethods
+    include DataObjects::InstanceMethods
 
     #Class Methods
 
@@ -12,5 +12,5 @@ class Event
 
     #Instance Methods
 
-    attr_accessor :name, :date, :description, :calendar, :url
+    attr_accessor :name, :date, :time, :description, :calendar, :url
 end

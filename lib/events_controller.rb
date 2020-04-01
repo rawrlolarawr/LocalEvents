@@ -2,7 +2,7 @@ class EventsController
     #Input Validation Constants
 
     MENU_RESPONSES = ["events", "source", "exit"]
-    SOURCE_RESPONSES = ["1", "2"]
+    SOURCE_RESPONSES = ["1", "2", "exit"]
 
     def initialize
         @scraper = Scraper.new
@@ -23,11 +23,13 @@ class EventsController
 
         input = get_input
         if valid?(SOURCE_RESPONSES, input)
-            case input.to_i
-            when 1
+            case input
+            when "1"
                 scrape_and_or_set_calendar("Mystic Aquarium")
-            when 2
+            when "2"
                 scrape_and_or_set_calendar("Niantic Children's Museum")
+            when "exit"
+                quit
             end
         else
             invalid_response
@@ -48,7 +50,7 @@ class EventsController
                 source_picker
                 menu
             when "exit"
-                exit
+                quit
             end
         else
             invalid_response
@@ -63,7 +65,7 @@ class EventsController
             @current_calendar = Calendar.find_by_name(name)
         else
             @scraper.scrape(name)
-            @current_calendar = Calendar.find_by_name(name)
+            scrape_and_or_set_calendar(name)
         end
     end
 
@@ -75,11 +77,13 @@ class EventsController
     end
 
     def more_information
-        puts "Enter the number of the Event you would like more information about"
+        printer(["Enter the number of the Event you would like more information about", "Enter a number 1-#{@current_calendar.event_list.length}"])
         input = get_input
         if input.to_i.between?(1, @current_calendar.event_list.length)
             event = @current_calendar.event_list[input.to_i - 1]
             populate_and_display_event(event)
+        elsif input == "exit"
+            quit
         else
             invalid_response
             more_information
@@ -88,7 +92,7 @@ class EventsController
 
     def populate_and_display_event(event)
         @scraper.scrape_event_info(event)
-        printer(["#{event.name}", "#{event.date}\n\n", "#{event.description}", "Website: #{event.url}\n\n"])
+        printer(["#{event.name}", "#{event.date} at #{event.time}\n\n", "#{event.description}", "Website: #{event.url}\n\n"])
     end
     
     #Shortcut Methods
@@ -109,7 +113,8 @@ class EventsController
         items.each {|i| puts i}
     end
 
-    def exit
+    def quit
         puts "Goodbye!"
+        exit
     end
 end
