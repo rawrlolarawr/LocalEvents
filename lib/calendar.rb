@@ -1,18 +1,7 @@
-class Calendar
-    extend DataObjects::ClassMethods
-    include DataObjects::InstanceMethods
+class Calendar < DataContainer
+    extend Findable::ClassMethods
 
-    #Class Methods
-
-    @@all = []
-
-    def self.all
-        @@all
-    end
-    
-    #Instance Methods
-
-    attr_accessor :name, :url , :css_calendar_tags
+    attr_accessor :css_calendar_tags
 
     def event_list
         Event.all.select {|event| event.calendar == self}

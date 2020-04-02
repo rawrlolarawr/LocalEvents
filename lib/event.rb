@@ -1,16 +1,5 @@
-class Event
-    extend DataObjects::ClassMethods
-    include DataObjects::InstanceMethods
-
-    #Class Methods
-
-    @@all = []
+class Event < DataContainer
+    extend Findable::ClassMethods
     
-    def self.all
-        @@all
-    end
-
-    #Instance Methods
-
-    attr_accessor :name, :date, :time, :description, :calendar, :url
+    attr_accessor :date, :time, :description, :calendar
 end
