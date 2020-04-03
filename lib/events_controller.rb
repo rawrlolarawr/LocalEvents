@@ -1,7 +1,7 @@
 class EventsController
     include Printable::InstanceMethods
     include Checkable::InstanceMethods
-    include Getable:: InstanceMethods
+    include Getable::InstanceMethods
 
     #Input Validation Constants
 
