@@ -1,6 +1,9 @@
 class DataContainer
+
+    # Keeps track of all instances of DataContainers
     @@all = []
     
+    # Returns the instances that are of the Class that called the method
     def self.all
         @@all.select{|c| c.is_a?(self)}
     end

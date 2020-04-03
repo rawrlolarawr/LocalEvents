@@ -18,6 +18,7 @@ class EventsController
 
     #CLI Methods
 
+    # Chooses a source to retrieve events from based on input
     def source_picker
         printer(["Choose a Location", "1. Mystic Aquarium", "2. Niantic Children's Museum"])
 
@@ -36,6 +37,7 @@ class EventsController
         end
     end
 
+    # Displays Events based on source, changes the source, or exits the program based on input
     def menu
         printer(["What would you like to do?", "Type 'events' to see the current events, 'source' to choose a new source or 'exit' to quit"])
 
@@ -58,6 +60,8 @@ class EventsController
 
     #Calendar Methods
 
+    # Checks to see if the calendar instance based on source is created.
+    # If it is the method sets the Calendar to that instance if not it scrapes the source.
     def scrape_and_or_set_calendar(name)
         if Calendar.find_by_name(name)
             @current_calendar = Calendar.find_by_name(name)
@@ -69,11 +73,13 @@ class EventsController
 
     #Event Methods
 
+    # Lists the events based on the Calendar that was set.
     def list_events
         @current_calendar.events.each_with_index {|event, index| puts "#{index + 1}. #{event.name}"}
         more_information
     end
 
+    # Chooses an event to get more information from based on input
     def more_information
         printer(["Enter the number of the Event you would like more information about", "Enter a number 1-#{@current_calendar.events.length}"])
         input = get_input
@@ -87,6 +93,7 @@ class EventsController
         end
     end
 
+    # Populates and prints the event that is passed
     def populate_and_display_event(event)
         Scraper.scrape_event_info(event)
         printer(["#{event.name}", "#{event.date} at #{event.time}\n\n", "#{event.description}", "Website: #{event.url}\n\n"])
