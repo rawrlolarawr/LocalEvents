@@ -2,7 +2,7 @@ module Printable
     module InstanceMethods
         def invalid_response(method)
             puts "Please enter a valid response"
-            method
+            method.call
         end
     
         def printer(items)

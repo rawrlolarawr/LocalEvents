@@ -32,8 +32,7 @@ class EventsController
                 quit
             end
         else
-            invalid_response(source_picker)
-            # source_picker
+            invalid_response(->{source_picker})
         end
     end
 
@@ -53,8 +52,7 @@ class EventsController
                 quit
             end
         else
-            invalid_response(menu)
-            # menu
+            invalid_response(->{menu})
         end
     end
 
@@ -85,8 +83,7 @@ class EventsController
         elsif input == "exit"
             quit
         else
-            invalid_response(more_information)
-            # more_information
+            invalid_response(->{more_information})
         end
     end
 
