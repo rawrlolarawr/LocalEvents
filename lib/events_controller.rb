@@ -32,8 +32,8 @@ class EventsController
                 quit
             end
         else
-            invalid_response
-            source_picker
+            invalid_response(source_picker)
+            # source_picker
         end
     end
 
@@ -53,8 +53,8 @@ class EventsController
                 quit
             end
         else
-            invalid_response
-            menu
+            invalid_response(menu)
+            # menu
         end
     end
 
@@ -72,21 +72,21 @@ class EventsController
     #Event Methods
 
     def list_events
-        @current_calendar.event_list.each_with_index {|event, index| puts "#{index + 1}. #{event.name}"}
+        @current_calendar.events.each_with_index {|event, index| puts "#{index + 1}. #{event.name}"}
         more_information
     end
 
     def more_information
-        printer(["Enter the number of the Event you would like more information about", "Enter a number 1-#{@current_calendar.event_list.length}"])
+        printer(["Enter the number of the Event you would like more information about", "Enter a number 1-#{@current_calendar.events.length}"])
         input = get_input
-        if input.to_i.between?(1, @current_calendar.event_list.length)
-            event = @current_calendar.event_list[input.to_i - 1]
+        if input.to_i.between?(1, @current_calendar.events.length)
+            event = @current_calendar.events[input.to_i - 1]
             populate_and_display_event(event)
         elsif input == "exit"
             quit
         else
-            invalid_response
-            more_information
+            invalid_response(more_information)
+            # more_information
         end
     end
 

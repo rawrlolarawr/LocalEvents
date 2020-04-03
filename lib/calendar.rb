@@ -3,7 +3,7 @@ class Calendar < DataContainer
 
     attr_accessor :css_calendar_tags, :event_names, :event_links, :doc
 
-    def event_list
+    def events
         Event.all.select {|event| event.calendar == self}
     end
 end
