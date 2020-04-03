@@ -1,8 +1,8 @@
 class Scraper
     #Source Constants
     
-    MYSTIC = {name: "Mystic Aquarium", url: "https://www.mysticaquarium.org/events/", css_calendar_tags: 'h2.tribe-events-list-event-title a'}
-    NCM = {name: "Niantic Children's Museum", url: "https://www.childrensmuseumsect.org/events/", css_calendar_tags: 'h3.tribe-events-month-event-title a'}
+    MYSTIC = {name: "Mystic Aquarium", url: "https://www.mysticaquarium.org/events/", css_calendar_tags: 'h2.tribe-events-list-event-title a', css_event_desc_tags: 'div.tribe-events-single-event-description p', css_event_date_time_tags: 'span.tribe-event-date-start'}
+    NCM = {name: "Niantic Children's Museum", url: "https://www.childrensmuseumsect.org/events/", css_calendar_tags: 'h3.tribe-events-month-event-title a', css_event_desc_tags: 'div.tribe-events-single-event-description p', css_event_date_time_tags: 'span.tribe-event-date-start'}
 
     #Main Method
 
@@ -37,8 +37,8 @@ class Scraper
 
     def self.scrape_event_info(event)
         event_page = Nokogiri::HTML(open(event.url))
-        event.description = event_page.css("div.tribe-events-single-event-description p").first.text
-        event.date = event_page.css("span.tribe-event-date-start").first.text.split(" @ ").first
-        event.time = event_page.css("span.tribe-event-date-start").first.text.split(" @ ").last
+        event.description = event_page.css(event.calendar.css_event_desc_tags).first.text
+        event.date = event_page.css(event.calendar.css_event_date_time_tags).first.text.split(" @ ").first
+        event.time = event_page.css(event.calendar.css_event_date_time_tags).first.text.split(" @ ").last
     end
 end
