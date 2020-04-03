@@ -6,36 +6,36 @@ class Scraper
 
     #Main Method
 
-    def scrape(source)
+    def self.scrape(source)
         if source == "Mystic Aquarium"
-            cal = Calendar.new(MYSTIC)
-            @doc = Nokogiri::HTML(open(cal.url))
-            scrape_calendar_content(cal.css_calendar_tags)
+            calendar = Calendar.new(MYSTIC)
+            calendar.doc = Nokogiri::HTML(open(calendar.url))
+            scrape_calendar_content(calendar)
         elsif source == "Niantic Children's Museum"
-            cal = Calendar.new(NCM)
-            @doc = Nokogiri::HTML(open(cal.url))
-            scrape_calendar_content(cal.css_calendar_tags)
+            calendar = Calendar.new(NCM)
+            calendar.doc = Nokogiri::HTML(open(calendar.url))
+            scrape_calendar_content(calendar)
         end
-        create_events(cal)
+        create_events(calendar)
     end
 
     # Calendar Methods
 
-    def scrape_calendar_content(tags)
-        @links = @doc.css(tags).map {|link| link['href']}
-        @names = @doc.css(tags).map {|name| name.text.strip}
+    def self.scrape_calendar_content(calendar)
+        calendar.event_links = calendar.doc.css(calendar.css_calendar_tags).map {|link| link['href']}
+        calendar.event_names = calendar.doc.css(calendar.css_calendar_tags).map {|name| name.text.strip}
     end
 
     #Event Methods
 
-    def create_events(current_calendar)
-        @links.each_with_index do |link, i|
-            attributes = {name: @names[i], url: link, calendar: current_calendar}
-            event = Event.new(attributes)
+    def self.create_events(current_calendar)
+        current_calendar.event_links.each_with_index do |link, i|
+            attributes = {name: current_calendar.event_names[i], url: link, calendar: current_calendar}
+            Event.new(attributes)
         end
     end
 
-    def scrape_event_info(event)
+    def self.scrape_event_info(event)
         event_page = Nokogiri::HTML(open(event.url))
         event.description = event_page.css("div.tribe-events-single-event-description p").first.text
         event.date = event_page.css("span.tribe-event-date-start").first.text.split(" @ ").first

@@ -1,12 +1,12 @@
 class EventsController
+    include Printable::InstanceMethods
+    include Checkable::InstanceMethods
+    include Getable:: InstanceMethods
+
     #Input Validation Constants
 
     MENU_RESPONSES = ["events", "source", "exit"]
     SOURCE_RESPONSES = ["1", "2", "exit"]
-
-    def initialize
-        @scraper = Scraper.new
-    end
 
     #Main Method
 
@@ -64,7 +64,7 @@ class EventsController
         if Calendar.find_by_name(name)
             @current_calendar = Calendar.find_by_name(name)
         else
-            @scraper.scrape(name)
+            Scraper.scrape(name)
             scrape_and_or_set_calendar(name)
         end
     end
@@ -91,30 +91,7 @@ class EventsController
     end
 
     def populate_and_display_event(event)
-        @scraper.scrape_event_info(event)
+        Scraper.scrape_event_info(event)
         printer(["#{event.name}", "#{event.date} at #{event.time}\n\n", "#{event.description}", "Website: #{event.url}\n\n"])
-    end
-    
-    #Shortcut Methods
-
-    def get_input
-        input = gets.strip.downcase
-    end
-
-    def valid?(valid_answers, input)
-        valid_answers.any?(input)
-    end
-
-    def invalid_response
-        puts "Please enter a valid response"
-    end
-
-    def printer(items)
-        items.each {|i| puts i}
-    end
-
-    def quit
-        puts "Goodbye!"
-        exit
     end
 end
