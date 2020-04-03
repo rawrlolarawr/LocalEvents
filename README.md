@@ -22,7 +22,7 @@ Execute the bin/run file to start the program then it will display a list of eve
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/christopherc0825/AquariumEvents.
+Bug reports and pull requests are welcome on GitHub at https://github.com/christopherc0825/LocalEvents.
 
 
 ## License
