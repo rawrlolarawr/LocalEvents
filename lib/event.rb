@@ -1,4 +1,4 @@
-class Event < DataContainer
+class LocalEvents::Event < LocalEvents::DataContainer
     extend Findable::ClassMethods
     
     attr_accessor :date, :time, :description, :calendar

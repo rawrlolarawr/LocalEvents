@@ -1,4 +1,4 @@
-class Scraper
+class LocalEvents::Scraper
     #Source Constants
     
     MYSTIC = {name: "Mystic Aquarium", url: "https://www.mysticaquarium.org/events/", css_calendar_tags: 'h2.tribe-events-list-event-title a', css_event_desc_tags: 'div.tribe-events-single-event-description p', css_event_date_time_tags: 'span.tribe-event-date-start'}
@@ -10,11 +10,11 @@ class Scraper
     # Scrapes the webpage from the url in the Calendar created
     def self.scrape(source)
         if source == "Mystic Aquarium"
-            calendar = Calendar.new(MYSTIC)
+            calendar = LocalEvents::Calendar.new(MYSTIC)
             calendar.doc = Nokogiri::HTML(open(calendar.url))
             scrape_calendar_content(calendar)
         elsif source == "Niantic Children's Museum"
-            calendar = Calendar.new(NCM)
+            calendar = LocalEvents::Calendar.new(NCM)
             calendar.doc = Nokogiri::HTML(open(calendar.url))
             scrape_calendar_content(calendar)
         end
@@ -35,7 +35,7 @@ class Scraper
     def self.create_events(current_calendar)
         current_calendar.event_links.each_with_index do |link, i|
             attributes = {name: current_calendar.event_names[i], url: link, calendar: current_calendar}
-            Event.new(attributes)
+            LocalEvents::Event.new(attributes)
         end
     end
 

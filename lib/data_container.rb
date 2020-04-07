@@ -1,4 +1,4 @@
-class DataContainer
+class LocalEvents::DataContainer
 
     # Keeps track of all instances of DataContainers
     @@all = []

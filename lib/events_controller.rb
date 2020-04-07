@@ -1,4 +1,4 @@
-class EventsController
+class LocalEvents::EventsController
     include Printable::InstanceMethods
     include Checkable::InstanceMethods
     include Getable::InstanceMethods
@@ -63,10 +63,10 @@ class EventsController
     # Checks to see if the calendar instance based on source is created.
     # If it is the method sets the Calendar to that instance if not it scrapes the source.
     def scrape_and_or_set_calendar(name)
-        if Calendar.find_by_name(name)
-            @current_calendar = Calendar.find_by_name(name)
+        if LocalEvents::Calendar.find_by_name(name)
+            @current_calendar = LocalEvents::Calendar.find_by_name(name)
         else
-            Scraper.scrape(name)
+            LocalEvents::Scraper.scrape(name)
             scrape_and_or_set_calendar(name)
         end
     end
@@ -95,7 +95,7 @@ class EventsController
 
     # Populates and prints the event that is passed
     def populate_and_display_event(event)
-        Scraper.scrape_event_info(event)
+        LocalEvents::Scraper.scrape_event_info(event)
         printer(["#{event.name}", "#{event.date} at #{event.time}\n\n", "#{event.description}", "Website: #{event.url}\n\n"])
     end
 end
