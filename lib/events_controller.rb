@@ -82,8 +82,7 @@ class LocalEvents::EventsController
 
     # Creates Events based on @current_calendar
     def create_events
-        events = LocalEvents::Scraper.scrape_events(@current_calendar)
-        events.each {|attributes| LocalEvents::Event.new(attributes)}
+        LocalEvents::Scraper.scrape_events(@current_calendar).each {|attributes| LocalEvents::Event.new(attributes)}
     end
 
     # Lists the events based on the Calendar that was set.

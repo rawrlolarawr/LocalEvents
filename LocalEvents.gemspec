@@ -1,4 +1,4 @@
-require_relative 'lib/LocalEvents1/version'
+require_relative 'lib/LocalEvents/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "LocalEvents"
@@ -10,8 +10,6 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/christopherc0825/LocalEvents"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
-
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/christopherc0825/LocalEvents"
