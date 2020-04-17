@@ -5,11 +5,10 @@ class LocalEvents::Scraper
     def self.scrape_calendar(calendar)
         if calendar.name == "Mystic Aquarium"
             calendar.doc = Nokogiri::HTML(open(calendar.url))
-            scrape_calendar_content(calendar)
         elsif calendar.name == "Niantic Children's Museum"
             calendar.doc = Nokogiri::HTML(open(calendar.url))
-            scrape_calendar_content(calendar)
         end
+        scrape_calendar_content(calendar)
     end
 
     # Calendar Methods
@@ -35,5 +34,15 @@ class LocalEvents::Scraper
         event.description = event_page.css(event.calendar.css_event_desc_tags).first.text
         event.date = event_page.css(event.calendar.css_event_date_time_tags).first.text.split(" @ ").first
         event.time = event_page.css(event.calendar.css_event_date_time_tags).first.text.split(" @ ").last
+    end
+
+    # Scrapes All Events
+
+    def self.scrape_all(calendar)
+        calendar.events.each do |event|
+            if !event.description?
+                scrape_event_details(event)
+            end
+        end
     end
 end

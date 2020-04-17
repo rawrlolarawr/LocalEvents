@@ -6,4 +6,11 @@ module Findable
             self.all.find {|object| object.name == name}
         end
     end
+
+    module InstanceMethods
+
+        def description?
+            !!self.description
+        end
+    end
 end

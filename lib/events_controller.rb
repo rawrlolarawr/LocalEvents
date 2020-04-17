@@ -107,7 +107,9 @@ class LocalEvents::EventsController
 
     # Populates and prints the event that is passed
     def populate_and_display_event(event)
-        LocalEvents::Scraper.scrape_event_details(event)
+        if !event.description?
+            LocalEvents::Scraper.scrape_event_details(event)   
+        end
         printer(["#{event.name}", "#{event.date} at #{event.time}\n\n", "#{event.description}", "Website: #{event.url}\n\n"])
     end
 end
