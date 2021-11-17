@@ -1,17 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    mini_portile2 (2.4.0)
-    nokogiri (1.10.9)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.12.5-x86_64-linux)
+      racc (~> 1.4)
+    racc (1.6.0)
     require_all (3.0.0)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   nokogiri
   require_all
 
 BUNDLED WITH
-   2.1.4
+   2.2.31

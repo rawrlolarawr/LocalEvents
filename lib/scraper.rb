@@ -4,9 +4,9 @@ class LocalEvents::Scraper
     # Scrapes the webpage from the url in the Calendar passed in
     def self.scrape_calendar(calendar)
         if calendar.name == "Mystic Aquarium"
-            calendar.doc = Nokogiri::HTML(open(calendar.url))
+            calendar.doc = Nokogiri::HTML(URI.open(calendar.url))
         elsif calendar.name == "Niantic Children's Museum"
-            calendar.doc = Nokogiri::HTML(open(calendar.url))
+            calendar.doc = Nokogiri::HTML(URI.open(calendar.url))
         end
         scrape_calendar_content(calendar)
     end
@@ -30,7 +30,7 @@ class LocalEvents::Scraper
 
     # Scrapes description, date, and time from the Event link attribute
     def self.scrape_event_details(event)
-        event_page = Nokogiri::HTML(open(event.url))
+        event_page = Nokogiri::HTML(URI.open(event.url))
         event.description = event_page.css(event.calendar.css_event_desc_tags).first.text
         event.date = event_page.css(event.calendar.css_event_date_time_tags).first.text.split(" @ ").first
         event.time = event_page.css(event.calendar.css_event_date_time_tags).first.text.split(" @ ").last
